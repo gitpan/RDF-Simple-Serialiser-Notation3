@@ -1,0 +1,5 @@
+
+RDF::Simple::Serialiser::Notation3
+
+This Perl module enables you to output Notation3 (N3) format
+from your RDF::Simple triples.
