@@ -1,5 +1,5 @@
 
-# $Id: foaf-n3.t,v 1.1 2008/04/30 10:23:25 Martin Exp $
+# $Id: foaf-n3.t,v 1.2 2008/05/02 00:00:47 Martin Exp $
 
 use Test::More 'no_plan';
 use Test::Deep;
@@ -29,6 +29,9 @@ my $rdf = $ser->serialise(@triples);
 my @asN3 = split(/\n/, $rdf);
 my @asExpected = <DATA>;
 chomp @asExpected;
+# The order of axioms in an N3 file is NOT important:
+@asExpected = sort @asExpected;
+@asN3 = sort @asN3;
 is_deeply(\@asN3, \@asExpected);
 
 __DATA__

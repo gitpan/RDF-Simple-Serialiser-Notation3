@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.3 2008/04/30 10:26:26 Martin Exp $
+# $Id: N3.pm,v 1.4 2008/05/01 23:58:41 Martin Exp $
 
 =head1 NAME
 
@@ -11,10 +11,9 @@ Same as L<RDF::Simple::Serialiser>,
 except when you call serialise(),
 you get back a string in Notation3 format.
 
-=head1 NOTE
+=head1 PRIVATE METHODS
 
-Sorry, there is no Notation3 parser for RDF::Simple.
-Not yet, anyway.
+=over
 
 =cut
 
@@ -28,7 +27,18 @@ use Data::Dumper;  # for debugging only
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.3 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.4 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+
+=item render_rdfxml
+
+This method does all the Notation3 formatting.
+Yes, it is named wrong;
+but all other functionality is inherited from RDF::Simple::Serialiser
+and that's how the author named the output function.
+You won't be calling this method anyway,
+you'll be calling the serialise() method, so what do you care!?!
+
+=cut
 
 sub render_rdfxml
   {
@@ -112,6 +122,15 @@ sub render_rdfxml
 1;
 
 __END__
+
+=back
+
+=head1 NOTES
+
+Sorry, there is no Notation3 parser for RDF::Simple.
+Not yet, anyway.
+
+=cut
 
 =head1 AUTHOR
 
