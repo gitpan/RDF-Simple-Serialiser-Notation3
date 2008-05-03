@@ -16,3 +16,5 @@ MANIFEST			This list of files
 META.yml
 README
 t/foaf-n3.t
+t/pod-coverage.t
+t/pod.t
