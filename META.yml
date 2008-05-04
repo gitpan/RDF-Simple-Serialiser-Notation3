@@ -1,7 +1,7 @@
 ---
-abstract: ~
+abstract: 'Output RDF triples in Notation3 format'
 author:
-  - 'Martin Thurn <mthurn@cpan.org>'
+  - 'Martin ''Kingpin' Thurn <mthurn@cpan.org>'
 build_requires:
   Test::Deep: 0
   Test::More: 0
@@ -20,5 +20,7 @@ no_index:
     - t
 requires:
   Data::Dumper: 0
+  Pod::Coverage: 0
   RDF::Simple::Serialiser: 0
-version: 1.005
+  perl: 5
+version: 1.006
