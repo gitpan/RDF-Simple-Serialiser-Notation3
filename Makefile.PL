@@ -5,7 +5,7 @@ use inc::Module::Install;
 
 name('RDF-Simple-Serialiser-Notation3');
 all_from('lib/RDF/Simple/Serialiser/N3.pm');
-version(1.006);
+version(1.007);
 # author('Martin Thurn <mthurn@cpan.org>');
 license('perl');
 abstract('Output RDF triples in Notation3 format');

@@ -23,4 +23,4 @@ requires:
   Pod::Coverage: 0
   RDF::Simple::Serialiser: 0
   perl: 5
-version: 1.006
+version: 1.007
