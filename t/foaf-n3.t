@@ -12,7 +12,8 @@ BEGIN
   use_ok($sMod);
   } # end of BEGIN block
 
-# This is taken from the SYNOPSIS of RDF::Simple::Serialiser:
+# This sample ontology is taken from the SYNOPSIS of
+# RDF::Simple::Serialiser:
 my $ser = new $sMod ( nodeid_prefix => 'a:' );
 isa_ok($ser, $sMod);
 $ser->addns( foaf => 'http://xmlns.com/foaf/0.1/' );
@@ -33,6 +34,8 @@ chomp @asExpected;
 @asExpected = sort @asExpected;
 @asN3 = sort @asN3;
 is_deeply(\@asN3, \@asExpected);
+my @asTriples = grep { /\A:/ } @asExpected;
+is($ser->get_triple_count, scalar(@asTriples));
 
 __DATA__
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .

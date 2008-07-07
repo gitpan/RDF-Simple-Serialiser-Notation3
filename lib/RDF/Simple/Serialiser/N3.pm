@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.4 2008/05/01 23:58:41 Martin Exp $
+# $Id: N3.pm,v 1.5 2008/07/07 21:47:07 Martin Exp $
 
 =head1 NAME
 
@@ -27,7 +27,7 @@ use Data::Dumper;  # for debugging only
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.4 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.5 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -74,13 +74,16 @@ sub render_rdfxml
       if (! $hsClassPrinted{$sClass})
         {
         $sRet .= qq{$sClass a owl:Class .\n\n};
+        $self->{_iTriples_}++;
         $hsClassPrinted{$sClass}++;
         } # if
       } # if
     $sRet .= qq{:$sId a $sClass .\n};
+    $self->{_iTriples_}++;
     if ($object->{Uri})
       {
       $sRet .= qq{:$sId rdf:about <$object->{Uri}> .\n};
+      $self->{_iTriples_}++;
       delete $object->{Uri};
 		} # if
   LITERAL:
@@ -90,6 +93,7 @@ sub render_rdfxml
       foreach my $sVal (@{$object->{literal}->{$sProp}})
         {
         $sRet .= qq{:$sId $sProp "$sVal" .\n};
+        $self->{_iTriples_}++;
         } # foreach LITERAL_PROPERTY
 		} # foreach LITERAL
     delete $object->{literal};
@@ -100,6 +104,7 @@ sub render_rdfxml
       foreach my $sVal (@{$object->{nodeid}->{$sProp}})
         {
         $sRet .= qq{:$sId $sProp :$sVal .\n};
+        $self->{_iTriples_}++;
         } # foreach NODEID_PROPERTY
 		} # foreach NODEID
     delete $object->{nodeid};
@@ -110,6 +115,7 @@ sub render_rdfxml
       foreach my $sVal (@{$object->{resource}->{$sProp}})
         {
         $sRet .= qq{:$sId $sProp <$sVal> .\n};
+        $self->{_iTriples_}++;
         } # foreach RESOURCE_PROPERTY
 		} # foreach RESOURCE
     delete $object->{resource};
@@ -118,6 +124,39 @@ sub render_rdfxml
     } # foreach OBJECT
   return $sRet;
   } # render_rdfxml
+
+
+=back
+
+=head1 PUBLIC METHODS
+
+=over
+
+=item get_triple_count
+
+Returns the number of triples created since the last call to
+reset_triple_count().
+
+=cut
+
+sub get_triple_count
+  {
+  my $self = shift;
+  return $self->{_iTriples_};
+  } # get_triple_count
+
+
+=item reset_triple_count
+
+Resets the internal counter of triples to zero.
+
+=cut
+
+sub reset_triple_count
+  {
+  my $self = shift;
+  $self->{_iTriples_} = 0;
+  } # get_triple_count
 
 1;
 

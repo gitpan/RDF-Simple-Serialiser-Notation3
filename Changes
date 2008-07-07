@@ -1,3 +1,8 @@
+2008-07-07  Kingpin  <Martin@BLUEMAX>
+
+	* lib/RDF/Simple/Serialiser/N3.pm (get_triple_count): new method
+	(reset_triple_count): new method
+
 2008-04-29    <Martin@BLUEMAX>
 
 	* first release
