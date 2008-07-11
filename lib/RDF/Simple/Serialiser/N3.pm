@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.5 2008/07/07 21:47:07 Martin Exp $
+# $Id: N3.pm,v 1.6 2008/07/11 23:44:13 Martin Exp $
 
 =head1 NAME
 
@@ -27,7 +27,7 @@ use Data::Dumper;  # for debugging only
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.5 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.6 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -36,7 +36,8 @@ Yes, it is named wrong;
 but all other functionality is inherited from RDF::Simple::Serialiser
 and that's how the author named the output function.
 You won't be calling this method anyway,
-you'll be calling the serialise() method, so what do you care!?!
+you'll be calling the serialise() method, so what do you care!
+In fact, I wouldn't even be telling you about it if I weren't playing the CPANTS game...
 
 =cut
 
