@@ -1,5 +1,5 @@
 
-# $Id: foaf-n3.t,v 1.3 2008/07/16 23:47:52 Martin Exp $
+# $Id: foaf-nt.t,v 1.1 2008/07/17 02:50:06 Martin Exp $
 
 use blib;
 use Test::More 'no_plan';
@@ -9,7 +9,7 @@ my $sMod;
 
 BEGIN
   {
-  $sMod = 'RDF::Simple::Serialiser::N3';
+  $sMod = 'RDF::Simple::Serialiser::NT';
   use_ok($sMod);
   } # end of BEGIN block
 
@@ -28,6 +28,8 @@ my @triples = (
                [$node2, 'rdf:type', 'http://xmlns.com/foaf/0.1/Person']
               );
 my $rdf = $ser->serialise(@triples);
+# print STDERR $rdf;
+# exit 88;
 my @asN3 = split(/\n/, $rdf);
 my @asExpected = <DATA>;
 chomp @asExpected;
@@ -35,16 +37,13 @@ chomp @asExpected;
 @asExpected = sort @asExpected;
 @asN3 = sort @asN3;
 is_deeply(\@asN3, \@asExpected);
-my @asTriples = grep { /\A:/ } @asExpected;
+my @asTriples = grep { /\S/ } @asExpected;
 is($ser->get_triple_count, scalar(@asTriples));
 
 __DATA__
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+_:a456 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:a456 <http://xmlns.com/foaf/0.1/name> "Robin Berjon" .
 
-:a456 a foaf:Person .
-:a456 foaf:name "Robin Berjon" .
-
-:a123 a foaf:Person .
-:a123 foaf:name "Jo Walsh" .
-:a123 foaf:knows :a456 .
+_:a123 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:a123 <http://xmlns.com/foaf/0.1/name> "Jo Walsh" .
+_:a123 <http://xmlns.com/foaf/0.1/knows> _:a456 .

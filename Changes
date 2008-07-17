@@ -1,3 +1,11 @@
+2008-07-16  Kingpin  <Martin@BLUEMAX>
+
+	* t/foaf-nt.t: new test
+
+	* lib/RDF/Simple/Serialiser/NTriples.pm: new module
+
+	* lib/RDF/Simple/Serialiser/NT.pm: new module
+
 2008-07-07  Kingpin  <Martin@BLUEMAX>
 
 	* lib/RDF/Simple/Serialiser/N3.pm (get_triple_count): new method

@@ -1,11 +1,11 @@
 
-# $Id: Makefile.PL,v 1.9 2008/05/16 12:13:19 Martin Exp $
+# $Id: Makefile.PL,v 1.11 2008/07/17 02:50:17 Martin Exp $
 
 use inc::Module::Install;
 
 name('RDF-Simple-Serialiser-Notation3');
 all_from('lib/RDF/Simple/Serialiser/N3.pm');
-version(1.011);
+version(1.012);
 # author('Martin Thurn <mthurn@cpan.org>');
 license('perl');
 abstract('Output RDF triples in Notation3 format');
