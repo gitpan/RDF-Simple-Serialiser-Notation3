@@ -1,5 +1,5 @@
 
-# $Id: NT.pm,v 1.1 2008/07/17 02:50:06 Martin Exp $
+# $Id: NT.pm,v 1.2 2008/07/27 00:56:15 Martin Exp $
 
 =head1 NAME
 
@@ -23,6 +23,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;  # for debugging only
+use Regexp::Common;
 
 use base 'RDF::Simple::Serialiser';
 
@@ -30,7 +31,7 @@ use constant DEBUG => 0;
 use constant DEBUG_URIREF => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.1 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.2 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -86,7 +87,13 @@ sub render_rdfxml
       foreach my $sVal (@{$object->{literal}->{$sProp}})
         {
         $sProp = $self->_make_uriref($sProp, $rhNS);
-        $sRet .= qq{$sId $sProp "$sVal" .\n};
+        if ($sVal !~ m/$RE{num}{decimal}/)
+          {
+          # Value is non-numeric; assume it's a string and put quotes
+          # around it:
+          $sVal = qq{"$sVal"};
+          } # if
+        $sRet .= qq{$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach LITERAL_PROPERTY
 		} # foreach LITERAL

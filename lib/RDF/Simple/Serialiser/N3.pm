@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.6 2008/07/11 23:44:13 Martin Exp $
+# $Id: N3.pm,v 1.8 2008/07/27 00:54:42 Martin Exp $
 
 =head1 NAME
 
@@ -23,11 +23,12 @@ use strict;
 use warnings;
 
 use Data::Dumper;  # for debugging only
+use Regexp::Common;
 
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.6 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.8 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -67,7 +68,7 @@ sub render_rdfxml
       print STDERR " EEE object has no Class: ", Dumper($object);
       next OBJECT;
       } # if
-    if ($sClass !~ m/[^:]+:[^:+]/)
+    if ($sClass !~ m/[^:]+:[^:]+/)
       {
       # Class is not explicitly qualified with a "prefix:", ergo now
       # explicitly qualify in the default namespace:
@@ -93,7 +94,13 @@ sub render_rdfxml
     LITERAL_PROPERTY:
       foreach my $sVal (@{$object->{literal}->{$sProp}})
         {
-        $sRet .= qq{:$sId $sProp "$sVal" .\n};
+        if ($sVal !~ m/$RE{num}{decimal}/)
+          {
+          # Value is non-numeric; assume it's a string and put quotes
+          # around it:
+          $sVal = qq{"$sVal"};
+          } # if
+        $sRet .= qq{:$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach LITERAL_PROPERTY
 		} # foreach LITERAL
@@ -167,10 +174,22 @@ __END__
 
 =head1 NOTES
 
+This module tries to automatically detect when the value of a property is a string
+(as opposed to numeric)
+and add double-quotes around it.
+This is probably not perfect, so please contact the author if you find a bug,
+or if you need a smarter way of handling value types.
+
 Sorry, there is no Notation3 parser for RDF::Simple.
 Not yet, anyway.
 
 =cut
+
+=head1 BUGS
+
+Please use the website 
+L<http://rt.cpan.org|http://rt.cpan.org/Ticket/Create.html?Queue=RDF-Simple-Serialiser-Notation3>
+to report bugs and request new features.
 
 =head1 AUTHOR
 

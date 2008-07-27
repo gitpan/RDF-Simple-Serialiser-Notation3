@@ -1,5 +1,5 @@
 
-# $Id: foaf-n3.t,v 1.3 2008/07/16 23:47:52 Martin Exp $
+# $Id: foaf-n3.t,v 1.4 2008/07/27 00:57:06 Martin Exp $
 
 use blib;
 use Test::More 'no_plan';
@@ -24,6 +24,7 @@ my @triples = (
                [$node1, 'foaf:name', 'Jo Walsh'],
                [$node1, 'foaf:knows', $node2],
                [$node2, 'foaf:name', 'Robin Berjon'],
+               [$node2, 'foaf:age', 26],
                [$node1, 'rdf:type', 'foaf:Person'],
                [$node2, 'rdf:type', 'http://xmlns.com/foaf/0.1/Person']
               );
@@ -44,6 +45,7 @@ __DATA__
 
 :a456 a foaf:Person .
 :a456 foaf:name "Robin Berjon" .
+:a456 foaf:age 26 .
 
 :a123 a foaf:Person .
 :a123 foaf:name "Jo Walsh" .
