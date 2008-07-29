@@ -1,5 +1,5 @@
 
-# $Id: NT.pm,v 1.2 2008/07/27 00:56:15 Martin Exp $
+# $Id: NT.pm,v 1.3 2008/07/29 00:10:43 Martin Exp $
 
 =head1 NAME
 
@@ -31,7 +31,7 @@ use constant DEBUG => 0;
 use constant DEBUG_URIREF => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.2 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.3 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -87,7 +87,7 @@ sub render_rdfxml
       foreach my $sVal (@{$object->{literal}->{$sProp}})
         {
         $sProp = $self->_make_uriref($sProp, $rhNS);
-        if ($sVal !~ m/$RE{num}{decimal}/)
+        if ($sVal !~ m/\A$RE{num}{decimal}\z/)
           {
           # Value is non-numeric; assume it's a string and put quotes
           # around it:

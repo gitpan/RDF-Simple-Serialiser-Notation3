@@ -24,4 +24,4 @@ requires:
   RDF::Simple::Serialiser: 0
   Regexp::Common: 0
   perl: 5
-version: 1.013
+version: 1.014

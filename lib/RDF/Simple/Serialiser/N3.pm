@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.8 2008/07/27 00:54:42 Martin Exp $
+# $Id: N3.pm,v 1.9 2008/07/29 00:10:43 Martin Exp $
 
 =head1 NAME
 
@@ -28,7 +28,7 @@ use Regexp::Common;
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.8 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.9 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -94,7 +94,7 @@ sub render_rdfxml
     LITERAL_PROPERTY:
       foreach my $sVal (@{$object->{literal}->{$sProp}})
         {
-        if ($sVal !~ m/$RE{num}{decimal}/)
+        if ($sVal !~ m/\A$RE{num}{decimal}\z/)
           {
           # Value is non-numeric; assume it's a string and put quotes
           # around it:
