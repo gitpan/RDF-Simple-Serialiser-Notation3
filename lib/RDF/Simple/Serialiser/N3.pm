@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.9 2008/07/29 00:10:43 Martin Exp $
+# $Id: N3.pm,v 1.11 2008/07/30 01:24:06 Martin Exp $
 
 =head1 NAME
 
@@ -28,7 +28,7 @@ use Regexp::Common;
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.9 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render_rdfxml
 
@@ -193,7 +193,7 @@ to report bugs and request new features.
 
 =head1 AUTHOR
 
-Martin 'Kingpin' Thurn <mthurn@cpan.org>
+Martin Thurn <mthurn@cpan.org>
 
 =head1 LICENSE
 

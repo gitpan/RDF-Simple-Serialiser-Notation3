@@ -1,18 +1,18 @@
 ---
 abstract: 'Output RDF triples in Notation3 format'
 author:
-  - 'Martin ''Kingpin' Thurn <mthurn@cpan.org>'
+  - 'Martin Thurn <mthurn@cpan.org>'
 build_requires:
   Test::Deep: 0
   Test::More: 0
   Test::Pod: 0
   Test::Pod::Coverage: 0
 distribution_type: module
-generated_by: 'Module::Install version 0.75'
+generated_by: 'Module::Install version 0.76'
 license: perl
 meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.3.html
-  version: 1.3
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
 name: RDF-Simple-Serialiser-Notation3
 no_index:
   directory:
@@ -24,4 +24,6 @@ requires:
   RDF::Simple::Serialiser: 0
   Regexp::Common: 0
   perl: 5
-version: 1.014
+resources:
+  license: http://dev.perl.org/licenses/
+version: 1.015
