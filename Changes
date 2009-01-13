@@ -1,3 +1,9 @@
+2009-01-12  Kingpin  <Martin@BLUEMAX>
+
+	* lib/RDF/Simple/Serialiser/N3.pm (render): renamed from render_rdfxml
+	
+	* lib/RDF/Simple/Serialiser/NT.pm (render): renamed from render_rdfxml
+
 2008-07-26  Kingpin  <Martin@BLUEMAX>
 
 	* lib/RDF/Simple/Serialiser/NT.pm (render_rdfxml): use Regexp::Common to detect numeric values

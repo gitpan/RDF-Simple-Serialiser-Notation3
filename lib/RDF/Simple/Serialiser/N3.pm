@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.11 2008/07/30 01:24:06 Martin Exp $
+# $Id: N3.pm,v 1.13 2009/01/13 01:46:22 Martin Exp $
 
 =head1 NAME
 
@@ -24,25 +24,23 @@ use warnings;
 
 use Data::Dumper;  # for debugging only
 use Regexp::Common;
+# We need the version with the new render() method:
+use RDF::Simple::Serialiser 1.007;
 
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.11 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.13 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
-=item render_rdfxml
+=item render
 
 This method does all the Notation3 formatting.
-Yes, it is named wrong;
-but all other functionality is inherited from RDF::Simple::Serialiser
-and that's how the author named the output function.
-You won't be calling this method anyway,
-you'll be calling the serialise() method, so what do you care!
-In fact, I wouldn't even be telling you about it if I weren't playing the CPANTS game...
+You should not be calling this method,
+you should be calling the serialise() method.
 
 =cut
 
-sub render_rdfxml
+sub render
   {
   my $self = shift;
   # Required arg1 = arrayref:
@@ -87,7 +85,7 @@ sub render_rdfxml
       $sRet .= qq{:$sId rdf:about <$object->{Uri}> .\n};
       $self->{_iTriples_}++;
       delete $object->{Uri};
-		} # if
+      } # if
   LITERAL:
     foreach my $sProp (keys %{$object->{literal}})
       {
@@ -103,7 +101,7 @@ sub render_rdfxml
         $sRet .= qq{:$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach LITERAL_PROPERTY
-		} # foreach LITERAL
+      } # foreach LITERAL
     delete $object->{literal};
   NODEID:
     foreach my $sProp (keys %{$object->{nodeid}})
@@ -114,7 +112,7 @@ sub render_rdfxml
         $sRet .= qq{:$sId $sProp :$sVal .\n};
         $self->{_iTriples_}++;
         } # foreach NODEID_PROPERTY
-		} # foreach NODEID
+      } # foreach NODEID
     delete $object->{nodeid};
   RESOURCE:
     foreach my $sProp (keys %{$object->{resource}})
@@ -125,13 +123,13 @@ sub render_rdfxml
         $sRet .= qq{:$sId $sProp <$sVal> .\n};
         $self->{_iTriples_}++;
         } # foreach RESOURCE_PROPERTY
-		} # foreach RESOURCE
+      } # foreach RESOURCE
     delete $object->{resource};
     print STDERR Dumper($object) if keys %$object;
     $sRet .= qq{\n};
     } # foreach OBJECT
   return $sRet;
-  } # render_rdfxml
+  } # render
 
 
 =back

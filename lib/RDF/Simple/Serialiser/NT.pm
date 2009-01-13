@@ -1,5 +1,5 @@
 
-# $Id: NT.pm,v 1.3 2008/07/29 00:10:43 Martin Exp $
+# $Id: NT.pm,v 1.4 2009/01/13 01:46:22 Martin Exp $
 
 =head1 NAME
 
@@ -24,6 +24,8 @@ use warnings;
 
 use Data::Dumper;  # for debugging only
 use Regexp::Common;
+# We need the version with the new render() method:
+use RDF::Simple::Serialiser 1.007;
 
 use base 'RDF::Simple::Serialiser';
 
@@ -31,9 +33,9 @@ use constant DEBUG => 0;
 use constant DEBUG_URIREF => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.3 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.4 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
-=item render_rdfxml
+=item render
 
 This method does all the N-Triples formatting.
 Yes, it is named wrong;
@@ -45,7 +47,7 @@ In fact, I wouldn't even be telling you about it if I weren't playing the CPANTS
 
 =cut
 
-sub render_rdfxml
+sub render
   {
   my $self = shift;
   # Required arg1 = arrayref:
@@ -127,7 +129,7 @@ sub render_rdfxml
     $sRet .= qq{\n};
     } # foreach OBJECT
   return $sRet;
-  } # render_rdfxml
+  } # render
 
 
 sub _make_nodeid
