@@ -1,5 +1,5 @@
 
-# $Id: N3.pm,v 1.13 2009/01/13 01:46:22 Martin Exp $
+# $Id: N3.pm,v 1.17 2009-07-04 14:28:18 Martin Exp $
 
 =head1 NAME
 
@@ -30,7 +30,9 @@ use RDF::Simple::Serialiser 1.007;
 use base 'RDF::Simple::Serialiser';
 
 our
-$VERSION = do { my @r = (q$Revision: 1.13 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.17 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+
+use constant DEBUG => 0;
 
 =item render
 
@@ -50,16 +52,29 @@ sub render
   my $sRet = q{};
   foreach my $sNS (keys %$rhNS)
     {
-    $sRet .= qq"\@prefix $sNS: <$rhNS->{$sNS}> .\n";
+    if (defined $rhNS->{$sNS} && ($rhNS->{$sNS}ne q{}))
+      {
+      $sRet .= qq"\@prefix $sNS: <$rhNS->{$sNS}> .\n";
+      $self->{_iTriples_}++;
+      } # if
     } # foreach
   $sRet .= qq{\n};
   my %hsClassPrinted;
  OBJECT:
   foreach my $object (@$raObjects)
     {
+    DEBUG && print STDERR " DDD   in render(), object is ", Dumper($object);
     # We delete elements as we process them, so that during debugging
     # we can see what's leftover:
-    my $sId = delete $object->{NodeId};
+    my $sId = delete $object->{NodeId} || q{};
+    if ($sId ne q{})
+      {
+      $sId = qq{:$sId};
+      }
+    else
+      {
+      $sId = delete $object->{Uri};
+      }
     my $sClass = delete $object->{Class};
     if (! $sClass)
       {
@@ -78,11 +93,11 @@ sub render
         $hsClassPrinted{$sClass}++;
         } # if
       } # if
-    $sRet .= qq{:$sId a $sClass .\n};
+    $sRet .= qq{$sId a $sClass .\n};
     $self->{_iTriples_}++;
     if ($object->{Uri})
       {
-      $sRet .= qq{:$sId rdf:about <$object->{Uri}> .\n};
+      $sRet .= qq{$sId rdf:about <$object->{Uri}> .\n};
       $self->{_iTriples_}++;
       delete $object->{Uri};
       } # if
@@ -98,7 +113,7 @@ sub render
           # around it:
           $sVal = qq{"$sVal"};
           } # if
-        $sRet .= qq{:$sId $sProp $sVal .\n};
+        $sRet .= qq{$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach LITERAL_PROPERTY
       } # foreach LITERAL
@@ -109,7 +124,7 @@ sub render
     NODEID_PROPERTY:
       foreach my $sVal (@{$object->{nodeid}->{$sProp}})
         {
-        $sRet .= qq{:$sId $sProp :$sVal .\n};
+        $sRet .= qq{$sId $sProp :$sVal .\n};
         $self->{_iTriples_}++;
         } # foreach NODEID_PROPERTY
       } # foreach NODEID
@@ -120,7 +135,11 @@ sub render
     RESOURCE_PROPERTY:
       foreach my $sVal (@{$object->{resource}->{$sProp}})
         {
-        $sRet .= qq{:$sId $sProp <$sVal> .\n};
+        if ($self->_looks_like_uri($sVal))
+          {
+          $sVal = qq{<$sVal>};
+          } # if
+        $sRet .= qq{$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach RESOURCE_PROPERTY
       } # foreach RESOURCE

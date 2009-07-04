@@ -1,3 +1,16 @@
+2009-07-04  Kingpin  <Martin@BLUEMAX>
+
+	* lib/RDF/Simple/Serialiser/N3.pm (render): try not to put <> around non-URI items
+	(render): count @prefix triples
+
+2009-07-03  Kingpin  <Martin@BLUEMAX>
+
+	* lib/RDF/Simple/Serialiser/N3.pm (render): if object has no ID, use its URI instead
+
+2009-07-01  Kingpin  <Martin@BLUEMAX>
+
+	* lib/RDF/Simple/Serialiser/N3.pm (render): do not output namespace prefixes whose value is undef or empty
+
 2009-01-12  Kingpin  <Martin@BLUEMAX>
 
 	* lib/RDF/Simple/Serialiser/N3.pm (render): renamed from render_rdfxml

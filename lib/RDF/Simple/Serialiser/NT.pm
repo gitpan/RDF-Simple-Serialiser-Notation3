@@ -1,5 +1,5 @@
 
-# $Id: NT.pm,v 1.4 2009/01/13 01:46:22 Martin Exp $
+# $Id: NT.pm,v 1.5 2009-07-04 14:29:29 Martin Exp $
 
 =head1 NAME
 
@@ -33,7 +33,7 @@ use constant DEBUG => 0;
 use constant DEBUG_URIREF => 0;
 
 our
-$VERSION = do { my @r = (q$Revision: 1.4 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
+$VERSION = do { my @r = (q$Revision: 1.5 $ =~ /\d+/g); sprintf "%d."."%03d" x $#r, @r };
 
 =item render
 
@@ -61,9 +61,15 @@ sub render
  OBJECT:
   foreach my $object (@$raObjects)
     {
+    DEBUG && print STDERR " DDD render object ", Dumper($object);
     # We delete elements as we process them, so that during debugging
     # we can see what's leftover:
-    my $sId = delete $object->{NodeId};
+    my $sId = delete $object->{NodeId} || q{};
+    if ($sId eq q{})
+      {
+      # Item does not have a NodeId, use its Uri instead:
+      $sId = delete $object->{Uri};
+      } # if
     my $sClass = delete $object->{Class};
     DEBUG && print STDERR " DDD raw sId=$sId, sClass=$sClass\n";
     $sId = $self->_make_nodeid($sId);
@@ -119,8 +125,16 @@ sub render
     RESOURCE_PROPERTY:
       foreach my $sVal (@{$object->{resource}->{$sProp}})
         {
+        if ($self->_looks_like_uri($sVal))
+          {
+          $sVal = qq{<$sVal>};
+          } # if
+        else
+          {
+          $sVal = $self->_make_nodeid($sVal);
+          }
         $sProp = $self->_make_uriref($sProp, $rhNS);
-        $sRet .= qq{$sId $sProp <$sVal> .\n};
+        $sRet .= qq{$sId $sProp $sVal .\n};
         $self->{_iTriples_}++;
         } # foreach RESOURCE_PROPERTY
       } # foreach RESOURCE
@@ -136,7 +150,11 @@ sub _make_nodeid
   {
   my $self = shift;
   # Required arg1 = an RDF nodeID to be converted:
-  my $s = shift;
+  my $s = shift || q{};
+  if ($s eq q{})
+    {
+    # Need to create a (random) new ID:
+    } # if
   $s =~ s/\A(?!_:)/_:/;
   return $s;
   } # _make_nodeid
@@ -145,7 +163,7 @@ sub _make_uriref
   {
   my $self = shift;
   # Required arg1 = an RDF element to be converted:
-  my $s = shift;
+  my $s = shift || q{};
   DEBUG_URIREF && print STDERR " DDD _make_uriref($s)\n";
   # Required arg2 = hashref of namespaces:
   my $rhNS = shift;

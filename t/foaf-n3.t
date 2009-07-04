@@ -1,5 +1,5 @@
 
-# $Id: foaf-n3.t,v 1.6 2008/07/30 21:07:48 Martin Exp $
+# $Id: foaf-n3.t,v 1.7 2009-07-04 14:49:43 Martin Exp $
 
 use blib;
 use Test::More 'no_plan';
@@ -15,7 +15,9 @@ BEGIN
 
 # This sample ontology is taken from the SYNOPSIS of
 # RDF::Simple::Serialiser:
-my $ser = new $sMod ( nodeid_prefix => 'a:' );
+my $ser = new $sMod (
+                     # nodeid_prefix => 'a:'
+                    );
 isa_ok($ser, $sMod);
 $ser->addns( foaf => 'http://xmlns.com/foaf/0.1/' );
 my $node1 = 'a:123';
@@ -33,24 +35,25 @@ my @triples = (
 my $rdf = $ser->serialise(@triples);
 my @asN3 = split(/\n/, $rdf);
 my @asExpected = <DATA>;
-chomp @asExpected;
 # The order of axioms in an N3 file is NOT important:
 @asExpected = sort @asExpected;
+# diag(@asExpected);
+chomp @asExpected;
 @asN3 = sort @asN3;
-is_deeply(\@asN3, \@asExpected);
-my @asTriples = grep { /\A:/ } @asExpected;
+is_deeply(\@asN3, \@asExpected, q{sorted arrays match});
+my @asTriples = grep { /\./ } @asExpected;
 is($ser->get_triple_count, scalar(@asTriples));
 
 __DATA__
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
-:a456 a foaf:Person .
-:a456 foaf:name "Robin Berjon" .
-:a456 foaf:age 26 .
-:a456 foaf:salary 56789.10 .
-:a456 foaf:address "123 Main St" .
+a:456 a foaf:Person .
+a:456 foaf:name "Robin Berjon" .
+a:456 foaf:age 26 .
+a:456 foaf:salary 56789.10 .
+a:456 foaf:address "123 Main St" .
 
-:a123 a foaf:Person .
-:a123 foaf:name "Jo Walsh" .
-:a123 foaf:knows :a456 .
+a:123 a foaf:Person .
+a:123 foaf:name "Jo Walsh" .
+a:123 foaf:knows a:456 .

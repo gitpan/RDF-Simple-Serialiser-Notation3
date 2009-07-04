@@ -1,5 +1,5 @@
 
-# $Id: foaf-nt.t,v 1.4 2008/07/30 21:07:49 Martin Exp $
+# $Id: foaf-nt.t,v 1.5 2009-07-04 14:49:43 Martin Exp $
 
 use blib;
 use Test::More 'no_plan';
@@ -15,16 +15,16 @@ BEGIN
 
 # This sample ontology is taken from the SYNOPSIS of
 # RDF::Simple::Serialiser:
-my $ser = new $sMod ( nodeid_prefix => 'a:' );
+my $ser = new $sMod;
 isa_ok($ser, $sMod);
 $ser->addns( foaf => 'http://xmlns.com/foaf/0.1/' );
-my $node1 = 'a:123';
-my $node2 = 'a:456';
+my $node1 = 'a123';
+my $node2 = 'a456';
 my @triples = (
                [$node1, 'foaf:name', 'Jo Walsh'],
                [$node1, 'foaf:knows', $node2],
                [$node2, 'foaf:name', 'Robin Berjon'],
-               [$node2, 'foaf:age', 26],
+               [$node2, 'foaf:age', \'26'],
                [$node2, 'foaf:salary', '56789.10'],
                [$node2, 'foaf:address', '123 Main St'],
                [$node1, 'rdf:type', 'foaf:Person'],

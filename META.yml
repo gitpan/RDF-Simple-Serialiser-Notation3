@@ -3,12 +3,15 @@ abstract: 'Output RDF triples in Notation3 format'
 author:
   - 'Martin Thurn <mthurn@cpan.org>'
 build_requires:
+  ExtUtils::MakeMaker: 6.42
   Test::Deep: 0
   Test::More: 0
   Test::Pod: 0
   Test::Pod::Coverage: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.77'
+generated_by: 'Module::Install version 0.91'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,6 +19,7 @@ meta-spec:
 name: RDF-Simple-Serialiser-Notation3
 no_index:
   directory:
+    - examples
     - inc
     - t
 requires:
@@ -26,4 +30,4 @@ requires:
   perl: 5
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.016
+version: 1.017
